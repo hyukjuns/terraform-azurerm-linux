@@ -1,4 +1,5 @@
-# Required
+# vm
+## Required
 variable "resource_group_name" {
   type        = string
   description = "rg name"
@@ -11,7 +12,8 @@ variable "hostname" {
   type        = string
   description = "resource name, Computer name, host name"
 }
-variable "size" {
+variable "vm_size" {
+  type        = string
   description = "linux vm size"
 }
 variable "admin_username" {
@@ -34,7 +36,7 @@ variable "offer" {
   type        = string
   description = "image offer"
 }
-variable "sku" {
+variable "image_sku" {
   type        = string
   description = "image distro"
 }
@@ -42,17 +44,26 @@ variable "os_tag" {
   type        = string
   description = "image version"
 }
-variable "subnet_id" {
+
+## optional
+variable "os_disk_caching" {
   type        = string
-  description = "subnet id"
+  description = "OS disk Caching"
+  default     = "ReadWrite"
 }
+
+# nic
+## required
 variable "nic_name" {
   type        = string
   description = "nic name"
 }
+variable "subnet_id" {
+  type        = string
+  description = "subnet id"
+}
 
-# Optional
-## nic
+## optional
 variable "ip_configuration_name" {
   type        = string
   description = "IP Configuration Name"
@@ -65,12 +76,6 @@ variable "private_ip_address_allocation" {
 }
 variable "public_ip_address_id" {
   type        = string
-  description = "Public ip address id"
-  default = ""
-}
-## vm
-variable "os_disk_caching" {
-  type        = string
-  description = "OS disk Caching"
-  default     = "ReadWrite"
+  description = "public_ip_address_id"
+  default     = ""
 }

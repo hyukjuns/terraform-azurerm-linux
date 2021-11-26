@@ -1,11 +1,12 @@
-data "azurerm_resource_group" "linux_vm" {
+data "azurerm_resource_group" "linux" {
   name = var.resource_group_name
 }
 
-resource "azurerm_network_interface" "linux_vm" {
+# nic
+resource "azurerm_network_interface" "linux" {
   name                = var.nic_name
-  resource_group_name = data.azurerm_resource_group.linux_vm.name
-  location            = coalesce(var.location, data.azurerm_resource_group.linux_vm.location)
+  resource_group_name = data.azurerm_resource_group.linux.name
+  location            = coalesce(var.location, data.azurerm_resource_group.linux.location)
 
   ip_configuration {
     name                          = var.ip_configuration_name
@@ -15,15 +16,18 @@ resource "azurerm_network_interface" "linux_vm" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "linux_vm" {
+resource "azurerm_linux_virtual_machine" "linux" {
   name                = var.hostname
-  resource_group_name = data.azurerm_resource_group.linux_vm.name
-  location            = coalesce(var.location, data.azurerm_resource_group.linux_vm.location)
-  size                = var.size
-  admin_username      = var.admin_username
-  admin_password      = var.admin_password
+  resource_group_name = data.azurerm_resource_group.linux.name
+  location            = coalesce(var.location, data.azurerm_resource_group.linux.location)
+  size                = var.vm_size
+
+  disable_password_authentication = false
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+
   network_interface_ids = [
-    azurerm_network_interface.linux_vm.id,
+    azurerm_network_interface.linux.id,
   ]
 
   os_disk {
@@ -34,9 +38,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   source_image_reference {
     publisher = var.publisher
     offer     = var.offer
-    sku       = var.sku
+    sku       = var.image_sku
     version   = var.os_tag
   }
-
-  disable_password_authentication = false
 }
