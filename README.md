@@ -20,8 +20,7 @@ Terraform Cloud Module Registry에 등록하여 관리 하는 VCS 입니다.
 
 No modules.
 
-## 사용 예제
-[usage-sample](./usage-sample)
+## Usage
 ```
 provider "azurerm" {
   features {}
@@ -36,10 +35,10 @@ module "linux" {
   source              = "<TFC_REGISTRY>"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  hostname            = "VMNAME"
+  hostname            = "<VMNAME>"
   vm_size             = "Standard_F2"
-  admin_username      = "azureuser"
-  admin_password      = "PASSWORD"
+  admin_username      = "<NAME>"
+  admin_password      = "<PASSWORD>"
   os_disk_sku         = "Standard_LRS"
   publisher           = "Canonical"
   offer               = "UbuntuServer"
@@ -47,7 +46,6 @@ module "linux" {
   os_tag              = "latest"
   subnet_id           = module.network.subnet_id
   nic_name = "linux-server-nic"
-  //   public_ip_address_id = module.linux_public_ip.public_ip_address_id
   depends_on = [
     azurerm_resource_group.rg
   ]
